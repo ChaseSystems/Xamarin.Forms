@@ -1,0 +1,33 @@
+# configuration for Xamarin Forms CI - AppVeyor
+-
+  os: Visual Studio 2017
+  configuration: Debug
+  version: '{build}'
+  install:
+  - ps: >- 
+      $vsixPath = "$($env:USERPROFILE)\Bing.Maps.vsix";
+      (New-Object Net.WebClient).DownloadFile('https://visualstudiogallery.msdn.microsoft.com/224eb93a-ebc4-46ba-9be7-90ee777ad9e1/file/113087/6/Bing.Maps.vsix', $vsixPath);
+      "`"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VSIXInstaller.exe`" /q /a $vsixPath" | out-file ".\install-vsix.cmd" -Encoding ASCII;
+      .\install-vsix.cmd;
+  - nuget sources add -Name wpflighttoolkitci -Source https://ci.appveyor.com/nuget/wpflighttoolkit-ci
+  - nuget sources add -Name mygetnuget -Source https://www.myget.org/F/nuget
+  - nuget sources add -Name xamformsci -Source https://www.myget.org/F/xamarinforms-ci/api/v3/index.json
+  - nuget sources add -Name yoga -Source https://www.myget.org/F/yoga/api/v3/index.json
+  - nuget sources add -Name xamprojectci -Source https://www.myget.org/F/xamprojectci/api/v3/index.json
+  build:
+    project: Xamarin.Forms.sln
+    verbosity: minimal
+  before_build: 
+  - ps: >- 
+      $version = "3.0.0-ci";
+      $build = [int]::Parse($env:appveyor_build_number).ToString().PadLeft(4, '0');
+      Update-AppveyorBuild -Version "$version$build";
+  - nuget restore Xamarin.Forms.sln
+  test: off
+  after_build:
+  - ps: nuget pack .nuspec/Xamarin.Forms.nuspec -Version $env:APPVEYOR_BUILD_VERSION -properties Configuration=$env:CONFIGURATION
+  artifacts:
+  - path: '**\Xamarin.Forms.*.nupkg'
+  nuget:
+    account_feed: false
+    project_feed: true
