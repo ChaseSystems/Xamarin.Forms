@@ -1,5 +1,9 @@
 # configuration for Xamarin Forms CI - AppVeyor
 -
+  branches:
+    only:
+      - wpf-newimpl-appveyor
+      
   os: Visual Studio 2017
   configuration: Debug
   version: '{build}'
