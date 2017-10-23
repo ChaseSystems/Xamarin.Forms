@@ -18,6 +18,8 @@
       </group>
       <group targetFramework="net45">
         <dependency id="WpfLightToolkit" version="0.0.1"/>
+        <dependency id="OpenTK" version="3.0.0-pre"/>
+        <dependency id="OpenTK.GLControl" version="3.0.0-pre"/>
       </group>
       <group targetFramework="MonoAndroid10">
         <dependency id="Xamarin.Android.Support.v4" version="[23.3.0]"/>
