@@ -558,10 +558,10 @@ namespace Xamarin.Forms.Platform.Android
 
 			IVisualElementRenderer renderView = CreateRenderer(view, _context);
 			SetRenderer(view, renderView);
-
+#if !FORMS40
 			if (layout)
 				view.Layout(new Rectangle(0, 0, _context.FromPixels(_renderer.Width), _context.FromPixels(_renderer.Height)));
-
+#endif
 			_renderer.AddView(renderView.View);
 		}
 
@@ -793,7 +793,9 @@ namespace Xamarin.Forms.Platform.Android
 				if (modal.BackgroundColor == Color.Default && modal.BackgroundImage == null)
 					modalRenderer.View.SetWindowBackground();
 			}
+#if !FORMS40
 			modalRenderer.Element.Layout(new Rectangle(0, 0, _context.FromPixels(_renderer.Width), _context.FromPixels(_renderer.Height)));
+#endif
 			_renderer.AddView(modalRenderer.View);
 
 			var source = new TaskCompletionSource<bool>();
@@ -1109,7 +1111,7 @@ namespace Xamarin.Forms.Platform.Android
 
 			public override bool DispatchTouchEvent(MotionEvent e)
 			{
-				#region Excessive explanation
+#region Excessive explanation
 				// Normally dispatchTouchEvent feeds the touch events to its children one at a time, top child first,
 				// (and only to the children in the hit-test area of the event) stopping as soon as one of them has handled
 				// the event. 
@@ -1130,7 +1132,7 @@ namespace Xamarin.Forms.Platform.Android
 
 				// The container gets this message and after it gets the "handled" result from dispatchTouchEvent, 
 				// it then knows to ignore that result and return false/unhandled. This allows the event to propagate up the tree.
-				#endregion
+#endregion
 
 				_notReallyHandled = false;
 
@@ -1151,7 +1153,7 @@ namespace Xamarin.Forms.Platform.Android
 			}
 		}
 
-		#region IPlatformEngine implementation
+#region IPlatformEngine implementation
 
 		void IPlatformLayout.OnLayout(bool changed, int l, int t, int r, int b)
 		{
@@ -1159,8 +1161,10 @@ namespace Xamarin.Forms.Platform.Android
 			{
 				// ActionBar title text color resets on rotation, make sure to update
 				UpdateActionBarTextColor();
+#if !FORMS40
 				foreach (Page modal in _navModel.Roots.ToList())
 					modal.Layout(new Rectangle(0, 0, _context.FromPixels(r - l), _context.FromPixels(b - t)));
+#endif
 			}
 
 			foreach (IVisualElementRenderer view in _navModel.Roots.Select(GetRenderer))
@@ -1211,6 +1215,6 @@ namespace Xamarin.Forms.Platform.Android
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }

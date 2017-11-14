@@ -20,8 +20,8 @@ namespace Xamarin.Forms.Controls.Issues
 		    cPx.ItemTapped += delegate (object sender, ItemTappedEventArgs e) {
 		    };
             cPx.ClassId = "weather";
-            cPx.Layout (new Rectangle (0,0,480,768));
-            absLayout.Children.Add (cPx, new Rectangle (cPx.X, cPx.Y, cPx.Width, cPx.Height), AbsoluteLayoutFlags.None);
+			
+			absLayout.Children.Add (cPx, new Rectangle (cPx.X, cPx.Y, cPx.Width, cPx.Height), AbsoluteLayoutFlags.None);
             absLayout.LowerChild (cPx);
 		    PushAsync (new ContentPage { Content = absLayout });
 	    }

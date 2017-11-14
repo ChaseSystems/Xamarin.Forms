@@ -51,6 +51,9 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer (typeof (MasterDetailPage), typeof (MasterDetailRenderer))]
 #endif
 
+
+[assembly: ExportRenderer(typeof(StackLayout), typeof(Xamarin.Forms.Platform.Android.Renderers.StackLayoutRenderer))]
+
 [assembly: ExportRenderer(typeof(NativeViewWrapper), typeof(NativeViewWrapperRenderer))]
 [assembly: ExportCell(typeof(Cell), typeof(CellRenderer))]
 [assembly: ExportCell(typeof(EntryCell), typeof(EntryCellRenderer))]

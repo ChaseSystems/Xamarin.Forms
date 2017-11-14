@@ -152,7 +152,7 @@ namespace Xamarin.Forms
 			base.OnRemoved(view);
 			view.PropertyChanged -= OnItemPropertyChanged;
 		}
-
+#if !FORMS40
 		internal override void ComputeConstraintForView(View view)
 		{
 			LayoutOptions vOptions = view.VerticalOptions;
@@ -231,7 +231,7 @@ namespace Xamarin.Forms
 			_columns = null;
 			_rows = null;
 		}
-
+#endif
 		void OnDefinitionChanged(object sender, EventArgs args)
 		{
 			ComputeConstrainsForChildren();

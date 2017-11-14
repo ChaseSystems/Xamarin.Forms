@@ -61,8 +61,11 @@ namespace Xamarin.Forms
 									}, defaultValueCreator: (bindable) => ((Layout)bindable).CreateDefaultPadding());
 
 		static IList<KeyValuePair<Layout, int>> s_resolutionList = new List<KeyValuePair<Layout, int>>();
+
+#if !FORMS40
 		static bool s_relayoutInProgress;
 		bool _allocatedFlag;
+#endif
 
 		bool _hasDoneLayout;
 		Size _lastLayoutSize = new Size(-1, -1);
@@ -102,8 +105,9 @@ namespace Xamarin.Forms
 			get { return _logicalChildren ?? (_logicalChildren = new ReadOnlyCollection<Element>(InternalChildren)); }
 		}
 
+#if !FORMS40
 		public event EventHandler LayoutChanged;
-
+#endif
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public IReadOnlyList<Element> Children
 		{
@@ -114,7 +118,7 @@ namespace Xamarin.Forms
 		{
 			SizeAllocated(Width, Height);
 		}
-
+#if !FORMS40
 		[Obsolete("OnSizeRequest is obsolete as of version 2.2.0. Please use OnMeasure instead.")]
 		public sealed override SizeRequest GetSizeRequest(double widthConstraint, double heightConstraint)
 		{
@@ -158,6 +162,7 @@ namespace Xamarin.Forms
 
 			child.Layout(region);
 		}
+#endif
 
 		public void LowerChild(View view)
 		{
@@ -184,14 +189,16 @@ namespace Xamarin.Forms
 			if (!_hasDoneLayout)
 				ForceLayout();
 		}
-
+#if !FORMS40
 		protected abstract void LayoutChildren(double x, double y, double width, double height);
-
+#endif
 		protected void OnChildMeasureInvalidated(object sender, EventArgs e)
 		{
+#if !FORMS40
 			InvalidationTrigger trigger = (e as InvalidationEventArgs)?.Trigger ?? InvalidationTrigger.Undefined;
 			OnChildMeasureInvalidated((VisualElement)sender, trigger);
 			OnChildMeasureInvalidated();
+#endif
 		}
 
 		protected virtual void OnChildMeasureInvalidated()
@@ -200,9 +207,11 @@ namespace Xamarin.Forms
 
 		protected override void OnSizeAllocated(double width, double height)
 		{
+#if !FORMS40
 			_allocatedFlag = true;
 			base.OnSizeAllocated(width, height);
 			UpdateChildrenLayout();
+#endif
 		}
 
 		protected virtual bool ShouldInvalidateOnChildAdded(View child)
@@ -217,6 +226,7 @@ namespace Xamarin.Forms
 
 		protected void UpdateChildrenLayout()
 		{
+#if !FORMS40
 			_hasDoneLayout = true;
 
 			if (!ShouldLayoutChildren())
@@ -256,10 +266,13 @@ namespace Xamarin.Forms
 			}
 
 			_lastLayoutSize = new Size(width, height);
+#endif
 		}
 
 		internal static void LayoutChildIntoBoundingRegion(View child, Rectangle region, SizeRequest childSizeRequest)
 		{
+
+#if !FORMS40
 			if (region.Size != childSizeRequest.Request)
 			{
 				bool canUseAlreadyDoneRequest = region.Width >= childSizeRequest.Request.Width && region.Height >= childSizeRequest.Request.Height;
@@ -288,10 +301,12 @@ namespace Xamarin.Forms
 			region.Height -= margin.VerticalThickness;
 
 			child.Layout(region);
+#endif
 		}
 
 		internal virtual void OnChildMeasureInvalidated(VisualElement child, InvalidationTrigger trigger)
 		{
+#if !FORMS40
 			ReadOnlyCollection<Element> children = LogicalChildrenInternal;
 			int count = children.Count;
 			for (var index = 0; index < count; index++)
@@ -348,6 +363,7 @@ namespace Xamarin.Forms
 					}
 				});
 			}
+#endif
 		}
 
 		internal override void OnIsVisibleChanged(bool oldValue, bool newValue)
@@ -414,19 +430,24 @@ namespace Xamarin.Forms
 			parent?.InternalChildren.Remove(view);
 
 			OnChildAdded(view);
+#if !FORMS40
 			if (ShouldInvalidateOnChildAdded(view))
 				InvalidateLayout();
 
 			view.MeasureInvalidated += OnChildMeasureInvalidated;
+#endif
 		}
 
 		void OnInternalRemoved(View view)
 		{
+#if !FORMS40
 			view.MeasureInvalidated -= OnChildMeasureInvalidated;
-
+#endif
 			OnChildRemoved(view);
+#if !FORMS40
 			if (ShouldInvalidateOnChildRemoved(view))
 				InvalidateLayout();
+#endif
 		}
 
 		bool ShouldLayoutChildren()

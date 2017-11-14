@@ -11,8 +11,9 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty SpacingProperty = BindableProperty.Create("Spacing", typeof(double), typeof(StackLayout), 6d,
 			propertyChanged: (bindable, oldvalue, newvalue) => ((StackLayout)bindable).InvalidateLayout());
-
+		#if !FORMS40
 		LayoutInformation _layoutInformation = new LayoutInformation();
+#endif
 		readonly Lazy<PlatformConfigurationRegistry<StackLayout>> _platformConfigurationRegistry;
 
 		public StackLayout()
@@ -37,7 +38,7 @@ namespace Xamarin.Forms
 			get { return (double)GetValue(SpacingProperty); }
 			set { SetValue(SpacingProperty, value); }
 		}
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			if (!HasVisibileChildren())
@@ -470,5 +471,6 @@ namespace Xamarin.Forms
 			public Rectangle[] Plots;
 			public SizeRequest[] Requests;
 		}
+#endif
 	}
 }

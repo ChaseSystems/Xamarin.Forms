@@ -61,9 +61,11 @@ namespace Xamarin.Forms
 			var weakView = new WeakReference<VisualElement>(view);
 			Action<double> layout = f =>
 			{
+#if !FORMS40
 				VisualElement v;
 				if (weakView.TryGetTarget(out v))
 					v.Layout(computeBounds(f));
+#endif
 			};
 			new Animation(layout, 0, 1, easing).Commit(view, "LayoutTo", 16, length, finished: (f, a) => tcs.SetResult(a));
 

@@ -110,8 +110,7 @@ namespace Xamarin.Forms.Controls.Issues
 						$"{Grid.GetColumnSpan(layout)}x{Grid.GetRowSpan(layout)}";
 				}
 			};
-			grid.LayoutChanged += (o, x) => update();
-
+			
 			var dashboard = new StackLayout();
 			stack.Children.Add(dashboard);
 			dashboard.Children.Add(columnDefinitionsLabel);

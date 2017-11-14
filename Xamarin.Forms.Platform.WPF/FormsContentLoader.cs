@@ -40,17 +40,19 @@ namespace Xamarin.Forms.Platform.WPF
 
 		public void OnSizeContentChanged(FrameworkElement parent, object page)
 		{
+#if !FORMS40
 			VisualElement visualElement = page as VisualElement;
 			if (visualElement != null)
 			{
 				CreateOrResizeContent(parent, visualElement);
 			}
+#endif
 		}
 
 		private object CreateOrResizeContent(FrameworkElement parent, VisualElement visualElement)
 		{
 			var renderer = Platform.GetOrCreateRenderer(visualElement);
-
+#if !FORMS40
 			//if (Debugger.IsAttached)
 			//	Console.WriteLine("Page type : " + visualElement.GetType() + " (" + (visualElement as Page).Title + ") -- Parent type : " + visualElement.Parent.GetType() + " -- " + parent.ActualHeight + "H*" + parent.ActualWidth + "W");
 
@@ -59,7 +61,7 @@ namespace Xamarin.Forms.Platform.WPF
 			IPageController pageController = visualElement.RealParent as IPageController;
 			if (pageController != null)
 				pageController.ContainerArea = new Rectangle(0, 0, parent.ActualWidth, parent.ActualHeight);
-				
+#endif
 			return renderer.GetNativeElement();
 		}
 	}

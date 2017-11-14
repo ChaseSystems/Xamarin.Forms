@@ -11,10 +11,24 @@ using Xamarin.Forms.Platform.WPF.Helpers;
 
 namespace Xamarin.Forms.Platform.WPF
 {
-	public class LayoutRenderer : ViewRenderer<Layout, FormsPanel>
+	public class StackLayoutRenderer : AbstractLayoutRenderer<StackLayout, StackPanel>
 	{
-		IElementController ElementController => Element as IElementController;
+		protected override void OnElementChanged(ElementChangedEventArgs<StackLayout> e)
+		{
+			if (e.NewElement != null)
+			{
+				if (Control == null) // construct and SetNativeControl and suscribe control event
+				{
+					SetNativeControl(new StackPanel());
+				}
+			}
 
+			base.OnElementChanged(e);
+		}
+	}
+	
+    public class LayoutRenderer : AbstractLayoutRenderer<Layout, FormsPanel>
+	{
 		protected override void OnElementChanged(ElementChangedEventArgs<Layout> e)
 		{
 			if (e.NewElement != null)
@@ -22,6 +36,26 @@ namespace Xamarin.Forms.Platform.WPF
 				if (Control == null) // construct and SetNativeControl and suscribe control event
 				{
 					SetNativeControl(new FormsPanel(Element));
+				}
+			}
+
+			base.OnElementChanged(e);
+		}
+
+	}
+
+	public abstract class AbstractLayoutRenderer<TElement, TNativeElement> :  ViewRenderer<TElement, TNativeElement>
+		where TElement : Layout where TNativeElement : Panel
+	{
+		IElementController ElementController => Element as IElementController;
+
+		protected override void OnElementChanged(ElementChangedEventArgs<TElement> e)
+		{
+			if (e.NewElement != null)
+			{
+				if (Control == null) // construct and SetNativeControl and suscribe control event
+				{
+					//SetNativeControl(new FormsPanel(Element));
 				}
 
 				// Update control property 

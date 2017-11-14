@@ -66,7 +66,9 @@ namespace Xamarin.Forms.ControlGallery.Android
 
 			_page = newElement as MasterDetailPage;
 			_page.PropertyChanged += Page_PropertyChanged;
+#if !FORMS40
 			_page.LayoutChanged += Page_LayoutChanged;
+#endif
 		}
 
 		void Page_PropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -90,7 +92,9 @@ namespace Xamarin.Forms.ControlGallery.Android
 
 			if (disposing && _page != null)
 			{
+#if !FORMS40
 				_page.LayoutChanged -= Page_LayoutChanged;
+#endif
 				_page.PropertyChanged -= Page_PropertyChanged;
 				_page = null;
 			}

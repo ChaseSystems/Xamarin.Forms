@@ -15,7 +15,7 @@ namespace Xamarin.Forms
 		}
 
 		IList<Element> IControlTemplated.InternalChildren => InternalChildren;
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
@@ -26,6 +26,7 @@ namespace Xamarin.Forms
 					LayoutChildIntoBoundingRegion(child, new Rectangle(x, y, width, height));
 			}
 		}
+
 
 		[Obsolete("OnSizeRequest is obsolete as of version 2.2.0. Please use OnMeasure instead.")]
 		protected override SizeRequest OnSizeRequest(double widthConstraint, double heightConstraint)
@@ -58,6 +59,7 @@ namespace Xamarin.Forms
 				result |= LayoutConstraint.HorizontallyFixed;
 			view.ComputedConstraint = result;
 		}
+#endif
 
 		internal override void SetChildInheritedBindingContext(Element child, object context)
 		{

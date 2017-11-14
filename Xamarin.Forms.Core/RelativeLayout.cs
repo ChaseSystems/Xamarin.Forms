@@ -59,6 +59,7 @@ namespace Xamarin.Forms
 				}
 
 				List<View> unsolvedChildren = Children.Cast<View>().ToList();
+#if !FORMS40
 				while (unsolvedChildren.Any())
 				{
 					List<View> copy = unsolvedChildren.ToList();
@@ -76,6 +77,7 @@ namespace Xamarin.Forms
 					if (!solvedChild)
 						throw new UnsolvableConstraintsException("Constraints as specified contain an unsolvable loop.");
 				}
+#endif
 
 				_childrenInSolveOrder = result;
 				return _childrenInSolveOrder;
@@ -91,6 +93,7 @@ namespace Xamarin.Forms
 
 		void UpdateBoundsConstraint(View view)
 		{
+#if !FORMS40
 			if (GetBoundsConstraint(view) == null)
 				return; // Bounds constraint hasn't been calculated yet, no need to update just yet
 
@@ -99,6 +102,7 @@ namespace Xamarin.Forms
 			_childrenInSolveOrder = null; // New constraints may have impact on solve order
 
 			InvalidateLayout();
+#endif
 		}
 
 		public static BoundsConstraint GetBoundsConstraint(BindableObject bindable)
@@ -150,7 +154,7 @@ namespace Xamarin.Forms
 		{
 			bindable.SetValue(YConstraintProperty, value);
 		}
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			foreach (View child in ChildrenInSolveOrder)
@@ -293,7 +297,7 @@ namespace Xamarin.Forms
 			BoundsConstraint bounds = BoundsConstraint.FromExpression(() => new Rectangle(x(), y(), width(), height()), parents.Distinct().ToArray());
 			SetBoundsConstraint(view, bounds);
 		}
-
+#endif
 		static Rectangle SolveView(View view)
 		{
 			BoundsConstraint boundsConstraint = GetBoundsConstraint(view);
@@ -337,8 +341,10 @@ namespace Xamarin.Forms
 
 			public void Add(View view, Expression<Func<double>> x = null, Expression<Func<double>> y = null, Expression<Func<double>> width = null, Expression<Func<double>> height = null)
 			{
+#if !FORMS40
 				Func<double> xCompiled = x != null ? x.Compile() : () => 0;
 				Func<double> yCompiled = y != null ? y.Compile() : () => 0;
+
 				Func<double> widthCompiled = width != null ? width.Compile() : () => view.Measure(Parent.Width, Parent.Height, MeasureFlags.IncludeMargins).Request.Width;
 				Func<double> heightCompiled = height != null ? height.Compile() : () => view.Measure(Parent.Width, Parent.Height, MeasureFlags.IncludeMargins).Request.Height;
 
@@ -351,7 +357,7 @@ namespace Xamarin.Forms
 				BoundsConstraint bounds = BoundsConstraint.FromExpression(() => new Rectangle(xCompiled(), yCompiled(), widthCompiled(), heightCompiled()), parents.Distinct().ToArray());
 
 				SetBoundsConstraint(view, bounds);
-
+#endif
 				base.Add(view);
 			}
 

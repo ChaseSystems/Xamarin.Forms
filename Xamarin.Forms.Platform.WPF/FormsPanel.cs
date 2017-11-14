@@ -70,8 +70,8 @@ namespace Xamarin.Forms.Platform.WPF
 					control.Measure(new System.Windows.Size(width, height));
 				}
 			}
-
-			System.Windows.Size result;
+			System.Windows.Size result = new System.Windows.Size();
+#if !FORMS40
 			if (double.IsInfinity(availableSize.Width) || double.IsPositiveInfinity(availableSize.Height))
 			{
 				Size request = Element.Measure(availableSize.Width, availableSize.Height, MeasureFlags.IncludeMargins).Request;
@@ -81,6 +81,7 @@ namespace Xamarin.Forms.Platform.WPF
 			{
 				result = availableSize;
 			}
+#endif
 			Element.IsInNativeLayout = false;
 
 			return result;

@@ -202,15 +202,15 @@ namespace Xamarin.Forms.Platform.Android
 
 				double width = Context.FromPixels(r - l);
 				double height = Context.FromPixels(b - t);
-
+#if !FORMS40
 				Performance.Start("Element.Layout");
 				Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_view.Element, new Rectangle(0, 0, width, height));
 				Performance.Stop("Element.Layout");
-
+#endif
 				_view.UpdateLayout();
 				Performance.Stop();
 			}
-
+#if !FORMS40
 			protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
 			{
 				Performance.Start();
@@ -230,7 +230,7 @@ namespace Xamarin.Forms.Platform.Android
 
 				Performance.Stop();
 			}
-
+#endif
 			void UpdateWatchForLongPress()
 			{
 				var vw = _view.Element as Xamarin.Forms.View;

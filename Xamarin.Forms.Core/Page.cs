@@ -29,7 +29,9 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty PaddingProperty = BindableProperty.Create("Padding", typeof(Thickness), typeof(Page), default(Thickness), propertyChanged: (bindable, old, newValue) =>
 		{
 			var layout = (Page)bindable;
+#if !FORMS40
 			layout.UpdateChildrenLayout();
+#endif
 		});
 
 		public static readonly BindableProperty TitleProperty = BindableProperty.Create("Title", typeof(string), typeof(Page), null);
@@ -37,11 +39,13 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty IconProperty = BindableProperty.Create("Icon", typeof(FileImageSource), typeof(Page), default(FileImageSource));
 
 		readonly Lazy<PlatformConfigurationRegistry<Page>> _platformConfigurationRegistry;
-
+		#if !FORMS40
 		bool _allocatedFlag;
+#endif
 		Rectangle _containerArea;
-
+		#if !FORMS40
 		bool _containerAreaSet;
+#endif
 
 		bool _hasAppeared;
 
@@ -96,7 +100,9 @@ namespace Xamarin.Forms
 			{
 				if (_containerArea == value)
 					return;
+#if !FORMS40
 				_containerAreaSet = true;
+#endif
 				_containerArea = value;
 				ForceLayout();
 			}
@@ -114,8 +120,9 @@ namespace Xamarin.Forms
 
 		internal override ReadOnlyCollection<Element> LogicalChildrenInternal => 
 			_logicalChildren ?? (_logicalChildren = new ReadOnlyCollection<Element>(InternalChildren));
-
+		#if !FORMS40
 		public event EventHandler LayoutChanged;
+#endif
 
 		public event EventHandler Appearing;
 
@@ -152,7 +159,7 @@ namespace Xamarin.Forms
 		{
 			return OnBackButtonPressed();
 		}
-
+#if !FORMS40
 		protected virtual void LayoutChildren(double x, double y, double width, double height)
 		{
 			var area = new Rectangle(x, y, width, height);
@@ -181,7 +188,7 @@ namespace Xamarin.Forms
 					Forms.Layout.LayoutChildIntoBoundingRegion(child, area);
 			}
 		}
-
+#endif
 		protected virtual void OnAppearing()
 		{
 		}
@@ -212,8 +219,10 @@ namespace Xamarin.Forms
 
 		protected virtual void OnChildMeasureInvalidated(object sender, EventArgs e)
 		{
+#if !FORMS40
 			InvalidationTrigger trigger = (e as InvalidationEventArgs)?.Trigger ?? InvalidationTrigger.Undefined;
 			OnChildMeasureInvalidated((VisualElement)sender, trigger);
+#endif
 		}
 
 		protected virtual void OnDisappearing()
@@ -226,7 +235,7 @@ namespace Xamarin.Forms
 				throw new InvalidOperationException("Parent of a Page must also be a Page");
 			base.OnParentSet();
 		}
-
+#if !FORMS40
 		protected override void OnSizeAllocated(double width, double height)
 		{
 			_allocatedFlag = true;
@@ -292,7 +301,7 @@ namespace Xamarin.Forms
 				SizeAllocated(Width, Height);
 			}
 		}
-
+#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void SendAppearing()
 		{
@@ -350,16 +359,18 @@ namespace Xamarin.Forms
 
 		void OnInternalAdded(VisualElement view)
 		{
+#if !FORMS40
 			view.MeasureInvalidated += OnChildMeasureInvalidated;
-
+#endif
 			OnChildAdded(view);
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
 		void OnInternalRemoved(VisualElement view)
 		{
+#if !FORMS40
 			view.MeasureInvalidated -= OnChildMeasureInvalidated;
-
+#endif
 			OnChildRemoved(view);
 		}
 

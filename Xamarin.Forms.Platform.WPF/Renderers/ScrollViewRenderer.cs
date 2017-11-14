@@ -80,12 +80,16 @@ namespace Xamarin.Forms.Platform.WPF
 
 			if(_currentView != null)
 			{
+#if !FORMS40
 				/*
 				 * Wrap Content in a DockPanel : The goal is to reduce ce Measure Cycle on scolling
 				 */
 				DockPanel dockPanel = new DockPanel();
 				dockPanel.Children.Add(Platform.GetOrCreateRenderer(_currentView).GetNativeElement());
 				Control.Content = dockPanel;
+#else
+				Control.Content = Platform.GetOrCreateRenderer(_currentView).GetNativeElement();
+#endif
 			}
 			else
 			{

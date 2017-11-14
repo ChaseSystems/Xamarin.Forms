@@ -26,7 +26,7 @@ namespace Xamarin.Forms.Controls
 
 			Stopwatch sw = new Stopwatch();
 			sw.Start ();
-			for (int i = 0; i < 500; i++) {
+			for (int i = 0; i < 1000; i++) {
 				layout.Children.Add (new Label { Text = i.ToString () });
 			}
 			sw.Stop ();

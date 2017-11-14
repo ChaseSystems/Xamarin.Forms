@@ -31,11 +31,12 @@ namespace Xamarin.Forms.Platform.WPF.Extensions
 			}
 
 			var frameworkElement = renderer.GetNativeElement();
-
+#if !FORMS40
 			frameworkElement.Loaded += (sender, args) =>
 			{
 				view.Layout(new Rectangle(0, 0, frameworkElement.ActualWidth, frameworkElement.ActualHeight));
 			};
+#endif
 
 			return frameworkElement;
 		}

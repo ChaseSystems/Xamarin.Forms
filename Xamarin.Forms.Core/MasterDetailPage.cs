@@ -104,7 +104,9 @@ namespace Xamarin.Forms
 				_detailBounds = value;
 				if (_detail == null)
 					throw new InvalidOperationException("Detail must be set before using a MasterDetailPage");
+#if !FORMS40
 				_detail.Layout(value);
+#endif
 			}
 		}
 
@@ -117,7 +119,9 @@ namespace Xamarin.Forms
 				_masterBounds = value;
 				if (_master == null)
 					throw new InvalidOperationException("Master must be set before using a MasterDetailPage");
+#if !FORMS40
 				_master.Layout(value);
+#endif
 			}
 		}
 
@@ -152,7 +156,7 @@ namespace Xamarin.Forms
 			bool isSplitOnPortrait = behavior == MasterBehavior.SplitOnPortrait && orientation.IsPortrait();
 			return behavior != MasterBehavior.Split && !isSplitOnLandscape && !isSplitOnPortrait;
 		}
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			if (Master == null || Detail == null)
@@ -160,7 +164,7 @@ namespace Xamarin.Forms
 			_master.Layout(_masterBounds);
 			_detail.Layout(_detailBounds);
 		}
-
+#endif
 		protected override void OnAppearing()
 		{
 			CanChangeIsPresented = true;

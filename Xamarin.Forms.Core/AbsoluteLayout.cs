@@ -57,7 +57,7 @@ namespace Xamarin.Forms
 		{
 			bindable.SetValue(LayoutFlagsProperty, flags);
 		}
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			foreach (View child in LogicalChildrenInternal)
@@ -291,7 +291,7 @@ namespace Xamarin.Forms
 
 			return result;
 		}
-
+#endif
 		public interface IAbsoluteList<T> : IList<T> where T : View
 		{
 			void Add(View view, Rectangle bounds, AbsoluteLayoutFlags flags = AbsoluteLayoutFlags.None);

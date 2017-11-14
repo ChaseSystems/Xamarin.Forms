@@ -54,7 +54,9 @@ using Xamarin.Forms.Platform.WPF;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-
+#if FORMS40
+[assembly: ExportRenderer(typeof(StackLayout), typeof(StackLayoutRenderer))]
+#endif
 [assembly: ExportRenderer(typeof(Layout), typeof(LayoutRenderer))]
 [assembly: ExportRenderer(typeof(Label), typeof(LabelRenderer))]
 [assembly: ExportRenderer(typeof(Button), typeof(ButtonRenderer))]

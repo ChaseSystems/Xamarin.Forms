@@ -17,6 +17,7 @@ namespace Xamarin.Forms
 			set { SetValue(ContentProperty, value); }
 		}
 
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
@@ -28,7 +29,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		[Obsolete("OnSizeRequest is obsolete as of version 2.2.0. Please use OnMeasure instead.")]
+	[Obsolete("OnSizeRequest is obsolete as of version 2.2.0. Please use OnMeasure instead.")]
 		protected override SizeRequest OnSizeRequest(double widthConstraint, double heightConstraint)
 		{
 			double widthRequest = WidthRequest;
@@ -45,12 +46,12 @@ namespace Xamarin.Forms
 				Minimum = childRequest.Minimum
 			};
 		}
-
+#endif
 		internal virtual void Clear()
 		{
 			Content = null;
 		}
-
+#if !FORMS40
 		internal override void ComputeConstraintForView(View view)
 		{
 			bool isFixedHorizontally = (Constraint & LayoutConstraint.HorizontallyFixed) != 0;
@@ -63,7 +64,7 @@ namespace Xamarin.Forms
 				result |= LayoutConstraint.HorizontallyFixed;
 			view.ComputedConstraint = result;
 		}
-
+#endif
 		internal override void SetChildInheritedBindingContext(Element child, object context)
 		{
 			// We never want to use the standard inheritance mechanism, we will get this set by our parent

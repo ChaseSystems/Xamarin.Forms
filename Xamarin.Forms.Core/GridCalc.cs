@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Xamarin.Forms
 {
+#if !FORMS40
 	public partial class Grid
 	{
 		List<ColumnDefinition> _columns;
@@ -589,7 +590,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		#region Helpers
+#region Helpers
 
 		static bool IsInColumn(BindableObject child, int column)
 		{
@@ -693,6 +694,7 @@ namespace Xamarin.Forms
 			return widthRequest - assigned;
 		}
 
-		#endregion
+#endregion
 	}
+#endif
 }

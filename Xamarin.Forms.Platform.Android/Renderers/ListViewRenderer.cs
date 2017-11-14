@@ -425,12 +425,14 @@ namespace Xamarin.Forms.Platform.Android
 
 			protected override void OnLayout(bool changed, int l, int t, int r, int b)
 			{
+#if !FORMS40
 				if (_child == null)
 					return;
 
 				_child.UpdateLayout();
+#endif
 			}
-
+#if !FORMS40
 			protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
 			{
 				if (_child == null)
@@ -444,7 +446,7 @@ namespace Xamarin.Forms.Platform.Android
 				Context ctx = Context;
 
 				var width = (int)ctx.FromPixels(MeasureSpecFactory.GetSize(widthMeasureSpec));
-
+			
 				SizeRequest request = _child.Element.Measure(width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
 				Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_child.Element, new Rectangle(0, 0, width, request.Request.Height));
 
@@ -454,6 +456,7 @@ namespace Xamarin.Forms.Platform.Android
 				_child.View.Measure(widthMeasureSpec, heightMeasureSpec);
 				SetMeasuredDimension(widthSpec, heightSpec);
 			}
+#endif
 		}
 	}
 }

@@ -20,12 +20,16 @@ namespace Xamarin.Forms.Platform.WPF
 				{
 					frameworkElement.Loaded += (sender, args) =>
 					{
+#if !FORMS40
 						visualElement.Layout(new Rectangle(0, 0, frameworkElement.ActualWidth, frameworkElement.ActualHeight));
+#endif
 					};
 
 					frameworkElement.SizeChanged += (sender, args) =>
 					{
+#if !FORMS40
 						visualElement.Layout(new Rectangle(0, 0, frameworkElement.ActualWidth, frameworkElement.ActualHeight));
+#endif
 					};
 
 					return frameworkElement;

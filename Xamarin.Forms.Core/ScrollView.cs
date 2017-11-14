@@ -166,7 +166,7 @@ namespace Xamarin.Forms
 			OnScrollToRequested(args);
 			return _scrollCompletionSource.Task;
 		}
-
+#if !FORMS40
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
 			if (_content != null)
@@ -241,7 +241,7 @@ namespace Xamarin.Forms
 					break;
 			}
 		}
-
+#endif
 		bool CheckElementBelongsToScrollViewer(Element element)
 		{
 			return Equals(element, this) || element.RealParent != null && CheckElementBelongsToScrollViewer(element.RealParent);

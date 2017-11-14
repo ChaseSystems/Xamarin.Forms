@@ -287,7 +287,9 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 		void LayoutRootPage(Page page, int width, int height)
 		{
 			var activity = (FormsAppCompatActivity)_context;
+#if !FORMS40
 			page.Layout(new Rectangle(0, 0, activity.FromPixels(width), activity.FromPixels(height)));
+#endif
 		}
 
 		Task PresentModal(Page modal, bool animated)
@@ -375,6 +377,7 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 
 			protected override void OnLayout(bool changed, int l, int t, int r, int b)
 			{
+#if !FORMS40
 				if (changed)
 				{
 					var activity = (FormsAppCompatActivity)Context;
@@ -384,15 +387,15 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 				}
 
 				_renderer.UpdateLayout();
+#endif
 			}
 		}
-
-		internal static int GenerateViewId()
+			internal static int GenerateViewId()
 		{
 			return Android.Platform.GenerateViewId();
 		}
 
-		#region Statics
+#region Statics
 
 		public static implicit operator ViewGroup(Platform canvas)
 		{
@@ -401,6 +404,6 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 
 		internal const string CloseContextActionsSignalName = "Xamarin.CloseContextActions";
 
-		#endregion
+#endregion
 	}
 }

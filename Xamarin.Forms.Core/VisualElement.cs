@@ -457,6 +457,7 @@ namespace Xamarin.Forms
 
 		public event EventHandler<FocusEventArgs> Focused;
 
+#if !FORMS40
 		[Obsolete("OnSizeRequest is obsolete as of version 2.2.0. Please use OnMeasure instead.")]
 		public virtual SizeRequest GetSizeRequest(double widthConstraint, double heightConstraint)
 		{
@@ -551,7 +552,7 @@ namespace Xamarin.Forms
 		}
 
 		public event EventHandler MeasureInvalidated;
-
+#endif
 		public event EventHandler SizeChanged;
 
 		public void Unfocus()
@@ -634,7 +635,9 @@ namespace Xamarin.Forms
 
 		protected void SizeAllocated(double width, double height)
 		{
+#if !FORMS40
 			OnSizeAllocated(width, height);
+#endif
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
@@ -642,12 +645,14 @@ namespace Xamarin.Forms
 
 		internal void ComputeConstrainsForChildren()
 		{
+#if !FORMS40
 			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
 			{
 				var child = LogicalChildrenInternal[i] as View;
 				if (child != null)
 					ComputeConstraintForView(child);
 			}
+#endif
 		}
 
 		internal virtual void ComputeConstraintForView(View view)
@@ -661,12 +666,16 @@ namespace Xamarin.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public void InvalidateMeasureNonVirtual(InvalidationTrigger trigger)
 		{
+#if !FORMS40
 			InvalidateMeasureInternal(trigger);
+#endif
 		}
 		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
 		{
+#if !FORMS40
 			_measureCache.Clear();
 			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+#endif
 		}
 
 		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger)
